@@ -162,12 +162,20 @@ def play
     end
   end
 
+
   list_hands
 
   puts "#{choose_who_goes_first} is first "
 
   hit_or_stay
   switch_players
+end
+
+def switch_players
+  @player == hash_of_players[@player.key + 1]
+binding.pry
+end
+
   def hit_or_stay
     begin
       puts "Would you like a HIT or would you like to STAY #{@player}?"
@@ -175,7 +183,8 @@ def play
       answer = gets.chomp.upcase
     end until answer == "H" || answer == "S"
     if answer == "H"
-      @player.add_card(@deck.deal)
+      binding.pry
+      @player.hand.add_card(@deck.deal)
     end
   end
 
@@ -259,7 +268,7 @@ end
 
 
 
-end
+
 
 
 
