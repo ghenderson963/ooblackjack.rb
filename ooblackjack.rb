@@ -149,6 +149,7 @@ class Game
     @deck = Deck.new
     @hash_of_players = {}
     @current_player = " "
+    @count = 0
   end
 
 def play
@@ -167,6 +168,7 @@ def play
   num = @hash_of_players.length
   num.times
   puts "#{@hash_of_players[0]} is first "
+  @player = @hash_of_players[0]
 
 
   hit_or_stay
@@ -175,9 +177,8 @@ def play
 end
 
 def switch_players
-
-
-  @player == @hash_of_players[@player.key + 1]
+  @count = @count + 1
+  @player == @hash_of_players[@count]
 binding.pry
 end
 
@@ -188,6 +189,7 @@ end
       answer = gets.chomp.upcase
     end until (answer == "H") || (answer == "S")
     if answer == "H"
+      binding.pry
       @player.hand.add_card(@deck.deal)
     else
       puts "#{@player} Stays."
