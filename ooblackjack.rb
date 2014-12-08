@@ -169,7 +169,7 @@ def list_hands
     puts "#{@hash_of_players[num].name} has:"
     @hash_of_players[num].hand.to_s
     puts " "
-    num =+ 1
+    num = num + 1
   end
 end
 
