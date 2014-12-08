@@ -125,6 +125,19 @@ end
 
 class Dealer < Player
 
+  def hit
+
+
+  end
+
+  def stay
+
+  end
+
+def run_game
+
+end
+
 
 
 end
@@ -148,8 +161,28 @@ def play
       player.hand.add_card(@deck.deal)
     end
   end
-  puts choose_who_goes_first
+
   list_hands
+
+  puts "#{choose_who_goes_first} is first "
+
+  hit_or_stay
+  switch_players
+  def hit_or_stay
+    begin
+      puts "Would you like a HIT or would you like to STAY #{@player}?"
+      puts "Use the keyboard to type (H) for HIT or (S) to stay"
+      answer = gets.chomp.upcase
+    end until answer == "H" || answer == "S"
+    if answer == "H"
+      @player.add_card(@deck.deal)
+    end
+  end
+
+  def switch_players
+
+  end
+
 
 
 # cycle through hash_of_players twice and deal one card
