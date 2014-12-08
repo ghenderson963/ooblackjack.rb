@@ -169,7 +169,7 @@ def list_hands
     puts "#{@hash_of_players[num].name} has:"
     @hash_of_players[num].hand.to_s
     puts " "
-    num = num + 1
+    num += 1
   end
 end
 
@@ -178,7 +178,7 @@ def get_player_name
   begin
     puts "how many players are going to play?  Chose 1-4"
     number_of_players = gets.chomp.to_i
-  end while number_of_players == 0 || number_of_players >= 4
+  end while number_of_players == 0 || number_of_players > 4
     number_of_players.times do |num|
       puts "What is player#{num + 1}'s name?"
       players_name = gets.chomp.to_s
