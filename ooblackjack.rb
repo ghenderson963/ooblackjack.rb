@@ -42,6 +42,7 @@ class Hand
   attr_accessor :hand_array
   def initialize
     @hand_array = []
+    @number_of_cards = @hand_array.count
   end
 
   def add_card(card)
@@ -55,13 +56,25 @@ class Hand
     total = 0
     total += value.to_i
   end
-  card_vals.select { |card| card == 11 }.count.times do
+  card_vals.select { |card| card.value == 11 }.count.times do
     if total > 21
       total -= 10
     end
   end
   total
 end
+
+def to_s
+  hand_total = 0
+  @hand_array.each do |card|
+    puts "#{card.rank} of #{card.suit}"
+    hand_total += card.value(card.rank).to_i
+  end
+  puts "for a total of #{hand_total}"
+
+
+end
+
 
 
 
@@ -102,6 +115,10 @@ class Player
     @hand = Hand.new
   end
 
+  def to_s
+    name
+  end
+
 
 
 end
@@ -128,11 +145,13 @@ def play
   @deck.scramble
   2.times do
     @hash_of_players.each do |k,player|
-      binding.pry
       player.hand.add_card(@deck.deal)
     end
   end
   puts choose_who_goes_first
+  list_hands
+
+
 # cycle through hash_of_players twice and deal one card
 # hash_of_players
   # @deck.deal
@@ -143,26 +162,35 @@ def play
 
 end
 
+def list_hands
+  count = @hash_of_players.length
+  num = 0
+  count.times do
+    puts "#{@hash_of_players[num].name} has:"
+    @hash_of_players[num].hand.to_s
+    puts " "
+    num =+ 1
+  end
+end
+
+
 def get_player_name
   begin
     puts "how many players are going to play?  Chose 1-4"
     number_of_players = gets.chomp.to_i
   end while number_of_players == 0 || number_of_players >= 4
-
-  number_of_players.times do |num|
-    puts "What is player#{num + 1}'s name?"
-    players_name = gets.chomp.to_s
-    @hash_of_players[num] = Player.new
-    @hash_of_players[num].name = "#{players_name}"
-  end
-  puts @hash_of_players
+    number_of_players.times do |num|
+      puts "What is player#{num + 1}'s name?"
+      players_name = gets.chomp.to_s
+      @hash_of_players[num] = Player.new
+      @hash_of_players[num].name = "#{players_name}"
+    end
 end
 
 def choose_who_goes_first
   count_of_players = @hash_of_players.length
   player_number = @hash_of_players.keys.sample
   @player = @hash_of_players[player_number]
-
 end
 
 # def alternate_players(current_player)
