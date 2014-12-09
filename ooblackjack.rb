@@ -40,6 +40,7 @@ end
 
 class Hand
   attr_accessor :hand_array
+
   def initialize
     @hand_array = []
     @number_of_cards = @hand_array.count
@@ -50,33 +51,27 @@ class Hand
   end
 
   def total_card_value
-# def count_up_cards(hand)
-  # card_vals = @hand_array.map  { |card| card[1] }
-  @hand_array.each do |card| card.value
-    total = 0
-    total += value.to_i
-  end
-  card_vals.select { |card| card.value == 11 }.count.times do
-    if total > 21
-      total -= 10
+     total = 0
+    @hand_array.each do |card|
+
+      total += card.value(card.rank).to_i
     end
+    # card_vals.select { |card| card.value == 11 }.count.times do
+    #   if total > 21
+    #     total -= 10
+    #   end
+    # end
+    total
   end
-  total
-end
 
-def to_s
-  hand_total = 0
-  @hand_array.each do |card|
-    puts "#{card.rank} of #{card.suit}"
-    hand_total += card.value(card.rank).to_i
+  def to_s
+    hand_total = 0
+    @hand_array.each do |card|
+      puts "#{card.rank} of #{card.suit}"
+      hand_total += card.value(card.rank).to_i
+    end
+    puts "for a total of #{hand_total}"
   end
-  puts "for a total of #{hand_total}"
-
-
-end
-
-
-
 
 end
 
@@ -118,9 +113,6 @@ class Player
   def to_s
     name
   end
-
-
-
 end
 
 class Dealer < Player
@@ -138,11 +130,7 @@ def run_game
 
 end
 
-
-
 end
-
-
 
 class Game
   def initialize
@@ -165,14 +153,28 @@ def play
 
 
   list_hands
-  num = @hash_of_players.length
-  num.times
   puts "#{@hash_of_players[0]} is first "
   @player = @hash_of_players[0]
 
+ # if !["h", "s"].include?(player_call)
+ #      puts "you must enter s or h"
+ #      next
+ #    end
+ #    if player_call == "s"
+ #      puts "You choose to stay"
+ #      break
+ #    end
+ #    if player_total_count == 21
+ #      puts "Blackjack! you win!"
+ #      exit
+ #    elsif player_total_count > 21
+ #      puts "Busted! you loose!"
+ #      exit
+ #    end
+
 while @count < @hash_of_players.length
-  hit_or_stay
-  switch_players
+    hit_or_stay
+    switch_players
 end
 
 end
@@ -183,19 +185,28 @@ def switch_players
 end
 
   def hit_or_stay
-    begin
+    while @player.hand.total_card_value < 21
       puts "Would you like a HIT or would you like to STAY #{@player}?"
       puts "Use the keyboard to type (H) for HIT or (S) to stay"
-      answer = gets.chomp.upcase
-    end until (answer == "H") || (answer == "S")
-    if answer == "H"
-
+      answer = gets.chomp.downcase
+      if !["h", "s"].include?(answer)
+        puts "You must enter s or h"
+        next
+      end
+      if answer == "s"
+        puts "You choose to stay!"
+        break
+      end
+      if @player.hand.total_card_value == 21
+        puts "Blackjack! You win!"
+        exit
+      elsif @player.hand.total_card_value > 21
+        puts "Busted! You loose!"
+        exit
+      end
       @player.hand.add_card(@deck.deal)
       list_hands
-    else
-      puts "#{@player} Stays."
-      list_hands
-    end
+end
   end
 
 
