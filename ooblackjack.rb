@@ -51,25 +51,26 @@ class Hand
   end
 
   def total_card_value
-     total = 0
+    total = 0
     @hand_array.each do |card|
-
       total += card.value(card.rank).to_i
     end
-    # card_vals.select { |card| card.value == 11 }.count.times do
-    #   if total > 21
-    #     total -= 10
-    #   end
-    # end
+    @hand_array.select { |card| card.value(card.rank) == 11 }.count.times do
+      if total > 21
+        total -= 10
+      end
+    end
     total
-  end
+end
 
   def to_s
     hand_total = 0
     @hand_array.each do |card|
       puts "#{card.rank} of #{card.suit}"
-      hand_total += card.value(card.rank).to_i
+
     end
+
+      hand_total += total_card_value
     puts "for a total of #{hand_total}"
   end
 
