@@ -170,16 +170,16 @@ def play
   puts "#{@hash_of_players[0]} is first "
   @player = @hash_of_players[0]
 
-
+while @count < @hash_of_players.length
   hit_or_stay
   switch_players
+end
 
 end
 
 def switch_players
   @count = @count + 1
-  @player == @hash_of_players[@count]
-binding.pry
+  @player = @hash_of_players[@count]
 end
 
   def hit_or_stay
@@ -189,10 +189,12 @@ end
       answer = gets.chomp.upcase
     end until (answer == "H") || (answer == "S")
     if answer == "H"
-      binding.pry
+
       @player.hand.add_card(@deck.deal)
+      list_hands
     else
       puts "#{@player} Stays."
+      list_hands
     end
   end
 
