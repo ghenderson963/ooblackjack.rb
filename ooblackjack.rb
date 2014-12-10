@@ -67,11 +67,16 @@ end
     hand_total = 0
     @hand_array.each do |card|
       puts "#{card.rank} of #{card.suit}"
-
     end
-
-      hand_total += total_card_value
+    hand_total += total_card_value
     puts "for a total of #{hand_total}"
+    # if hand_total == 21
+    #   puts "Blackjack! You win!"
+    #
+    # elsif hand_total > 21
+    #   puts "Busted! You loose!"
+    #   exit
+    # end
   end
 
 end
@@ -138,6 +143,7 @@ class Game
     @deck = Deck.new
     @hash_of_players = {}
     @current_player = " "
+    @dealer = Dealer.new
     @count = 0
   end
 
@@ -176,8 +182,13 @@ def play
 while @count < @hash_of_players.length
     hit_or_stay
     switch_players
-end
+  end
+  puts "dealers turn"
+  2.times do
+    @dealer.hand.add_card(@deck.deal)
 
+  end
+  @dealer.hand.to_s
 end
 
 def switch_players
@@ -190,6 +201,7 @@ end
       puts "Would you like a HIT or would you like to STAY #{@player}?"
       puts "Use the keyboard to type (H) for HIT or (S) to stay"
       answer = gets.chomp.downcase
+      # system "clear"
       if !["h", "s"].include?(answer)
         puts "You must enter s or h"
         next
@@ -199,16 +211,19 @@ end
         break
       end
       if @player.hand.total_card_value == 21
+
         puts "Blackjack! You win!"
         exit
       elsif @player.hand.total_card_value > 21
         puts "Busted! You loose!"
         exit
       end
+      binding.pry
       @player.hand.add_card(@deck.deal)
+      system "clear"
       list_hands
+    end
 end
-  end
 
 
 
@@ -254,6 +269,11 @@ def choose_who_goes_first
   player_number = @hash_of_players.keys.sample
   @player = @hash_of_players[player_number]
 end
+
+def remove_player
+  @hash_of_players.delete { |key, value| key == "#{@player}"}
+end
+
 
 # def alternate_players(current_player)
 #   hash_of_players
