@@ -210,16 +210,17 @@ end
         puts "You choose to stay!"
         break
       end
+       @player.hand.add_card(@deck.deal)
       if @player.hand.total_card_value == 21
-
-        puts "Blackjack! You win!"
-        exit
+        puts "Blackjack! #{@player} wins!"
+        list_hands
+        remove_player
+        break
       elsif @player.hand.total_card_value > 21
-        puts "Busted! You loose!"
-        exit
+        puts "Busted! #{@player} looses!"
+        remove_player
+        break
       end
-      binding.pry
-      @player.hand.add_card(@deck.deal)
       system "clear"
       list_hands
     end
@@ -271,7 +272,7 @@ def choose_who_goes_first
 end
 
 def remove_player
-  @hash_of_players.delete { |key, value| key == "#{@player}"}
+  @hash_of_players.delete_if{ |key, value| key == "#{@player}"}
 end
 
 
