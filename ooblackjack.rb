@@ -1,7 +1,7 @@
 require "pry"
 
 class Deck
-  attr_accessor :count
+  attr_accessor :count, :deck_of_cards
 
   def initialize
 
@@ -70,13 +70,6 @@ end
     end
     hand_total += total_card_value
     puts "for a total of #{hand_total}"
-    # if hand_total == 21
-    #   puts "Blackjack! You win!"
-    #
-    # elsif hand_total > 21
-    #   puts "Busted! You loose!"
-    #   exit
-    # end
   end
 
 end
@@ -136,6 +129,7 @@ def run_game
 
 end
 
+
 end
 
 class Game
@@ -163,33 +157,19 @@ def play
   puts "#{@hash_of_players[0]} is first "
   @player = @hash_of_players[0]
 
- # if !["h", "s"].include?(player_call)
- #      puts "you must enter s or h"
- #      next
- #    end
- #    if player_call == "s"
- #      puts "You choose to stay"
- #      break
- #    end
- #    if player_total_count == 21
- #      puts "Blackjack! you win!"
- #      exit
- #    elsif player_total_count > 21
- #      puts "Busted! you loose!"
- #      exit
- #    end
-
-while @count < @hash_of_players.length
+  while @count < @hash_of_players.length
     hit_or_stay
     switch_players
   end
   puts "dealers turn"
   2.times do
     @dealer.hand.add_card(@deck.deal)
-
   end
   @dealer.hand.to_s
+  dealer_turn
 end
+
+
 
 def switch_players
   @count = @count + 1
@@ -274,6 +254,26 @@ end
 def remove_player
   @hash_of_players.delete_if{ |key, value| key == "#{@player}"}
 end
+
+  def dealer_turn
+    if @dealer.hand.total_card_value == 21
+      puts "Dealer has Blackjack!"
+      exit
+    end
+    while @dealer.hand.total_card_value < 17
+      puts "The dealer hits!"
+      @dealer.hand.add_card(@deck.deal)
+      @dealer.hand.to_s
+      if @dealer.hand.total_card_value == 21
+        puts "Dealer has Blackjack!  You lose."
+        break
+      elsif  @deaoer.hand.total_card_value > 21
+       puts "Dealer has busted! You win."
+       break
+      end
+      puts "The dealer stays on a:"
+     end
+     end
 
 
 # def alternate_players(current_player)
